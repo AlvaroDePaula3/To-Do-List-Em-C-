@@ -106,17 +106,20 @@ namespace To_Do_List
             //método responsável por adicionar nova tarefa
             private void AdicionarTarefas()
             {
-                Console.WriteLine("=== ADICIONAR TAREFA ===");
+                Console.WriteLine("=== ADICIONAR TAREFA === \n");
                 Console.WriteLine();
                 //abaixo adicionaremos o título a tarefa (seja ele qual for)
                 Console.Write("Título: ");
                 string titulo = Console.ReadLine();
 
                 //a condicional abaixo é para garantir que o título não será um espaço em branco e nem será nulo
-                if(string.IsNullOrWhiteSpace(titulo))
+                do
                 {
-                    Console.WriteLine("Por favor, escreva um título que seja válido");
-                }
+                    if (string.IsNullOrWhiteSpace(titulo))
+                    {
+                        Console.WriteLine("Por favor, escreva um título que seja válido");
+                    }
+                } while (string.IsNullOrWhiteSpace(titulo));
 
                 //abaixo escreveremos a descrição da tarefa.
                 Console.Write("Descrição: ");
@@ -149,25 +152,48 @@ namespace To_Do_List
                 Tarefa novaTarefa = new Tarefa(titulo, descricao, prioridade);
                 listaDeTarefas.Add(novaTarefa);
                 Console.WriteLine("✅ EXCELENTE !!! Sua tarefa foi adicionada com sucesso !");
+                Console.WriteLine() ;
 
                 //ABAIXO ESTARÁ O RESUMO DA TAREFA:
                 Console.WriteLine("📝 RESUMO DA TAREFA: ");
-                Console.WriteLine("Título: " + titulo);
-                Console.WriteLine("Descrição: " + descricao);
-                Console.WriteLine("Prioridade: " + prioridade);
-                Console.WriteLine("Data: " + novaTarefa.DataCriacao);
-                Console.WriteLine("Status: Pendente");
+                Console.WriteLine($" Titulo: {(novaTarefa.Titulo)}");
+                Console.WriteLine($" Descrição: {(novaTarefa.Descricao)}");
+                Console.WriteLine($" Prioridade: {(novaTarefa.Prioridade)}");
+                Console.WriteLine($" Data: {novaTarefa.DataCriacao:dd/MM/yyyy HH:mm}");
+                Console.WriteLine($" Status: {(novaTarefa.Concluida ? "Concluída":"Pendente")}");
 
             }
 
             private void listarTarefas()
             {
+                Console.Clear();
+                Console.WriteLine("=== LISTA DE TAREFAS === \n");
 
+                if(listaDeTarefas.Count == 0)
+                {
+                    Console.WriteLine("Não há nenhuma tarefa por aqui... (Por enquanto)");
+                    return;
+                }
+
+                for(int i = 0; i < listaDeTarefas.Count; i++)
+                {
+                    Tarefa tarefa = listaDeTarefas[i];
+                    string status = tarefa.Concluida ? "Sim" : "Não";
+
+                    Console.WriteLine($" {i+1} {status} {tarefa.Titulo}");
+                    Console.WriteLine($" Descrição: {tarefa.Descricao}");
+                    Console.WriteLine($" Prioridade:{tarefa.Prioridade} e Data: {tarefa.DataCriacao:dd/MM/yyyy}");
+                    Console.WriteLine();
+                }
+
+                Console.WriteLine($" O total é: {listaDeTarefas.Count} tarefa(s) !!!");
             }
         }
 
         static void Main(string[] args)
         {
+            GerenciadorDeTarefas gerenciador = new GerenciadorDeTarefas();
+            gerenciador.Executar();
             
         }
     }
