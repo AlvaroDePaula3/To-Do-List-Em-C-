@@ -23,7 +23,7 @@ namespace To_Do_List
                 Descricao = descricao;
                 Prioridade = prioridade;
                 DataCriacao = DateTime.Now;
-                Concluida = false;
+                Concluida =  false;
             }
         }
 
@@ -69,8 +69,7 @@ namespace To_Do_List
                             listarTarefas();
                             break;
                         case 3:
-                            //implementar posteriormente
-                            Console.WriteLine("Funcionalidade ainda em desenvolvimento");
+                            concluirTarefa();
                             break;
                         case 4:
                             //implementar posteriormente
@@ -187,6 +186,73 @@ namespace To_Do_List
                 }
 
                 Console.WriteLine($" O total é: {listaDeTarefas.Count} tarefa(s) !!!");
+            }
+
+            private void concluirTarefa()
+            {
+                Console.Clear();
+                Console.WriteLine("=== MARCAR TAREFAS CONCLUÍDAS ===");
+
+                //assim como nos outros métodos, esse vai verificar se existem tarefas a serem concluídas
+                if(listaDeTarefas.Count == 0)
+                {
+                    Console.WriteLine("Não há nada aqui para ser concluído, inicie uma nova tarefa.");
+                    return;
+                }
+
+                mostrarTarefasParaConclusao();
+
+                //Solicitar dígito do usuário
+                Console.WriteLine("\n Digite o número da tarefa a ser concluída \n");
+                string digitoUsuario = Console.ReadLine();
+
+                if(int.TryParse(digitoUsuario,out int  indice))
+                {
+                    processarConclusao(indice);
+                } else
+                {
+                    Console.WriteLine("Entrada inválida. Digite um número por gentileza.");
+                }
+            }
+
+            //O nome é auto explicativo, o método abaixo mostra tarefas para serem concluídas
+            private void mostrarTarefasParaConclusao()
+            {
+                Console.WriteLine("Tarefas disponíveis (ainda) \n");
+
+                for(int i = 0;i<listaDeTarefas.Count;i++)
+                {
+                    Tarefa mostrarTarefa = listaDeTarefas[i];
+                    string statusTarefa = mostrarTarefa.Concluida ? "Concluída" : "Em andamento";
+
+                    Console.WriteLine($"{i + 1}. {statusTarefa} {mostrarTarefa.Titulo} (Prioridade: {mostrarTarefa.Prioridade})");
+                    Console.WriteLine($" Descrição: {mostrarTarefa.Descricao}");
+                    Console.WriteLine($" Data: {mostrarTarefa.DataCriacao:dd/MM/yyyy HH:mm}");
+                    Console.WriteLine();
+                }
+            }
+
+            private void processarConclusao(int indice)
+            {
+                int posicaoTarefa = indice - 1;
+
+                if(posicaoTarefa >= 0 && posicaoTarefa < listaDeTarefas.Count)
+                {
+                    Tarefa tarefinha = listaDeTarefas[posicaoTarefa];
+                    
+                    if(tarefinha.Concluida)
+                    {
+                        Console.WriteLine($"\n ⚠️ A tarefa {tarefinha.Titulo} já estava concluída !!!");
+                    } else
+                    {
+                        tarefinha.Concluida = true;
+                        Console.WriteLine($"A tarefa {tarefinha.Titulo} foi concluída com sucesso !!!");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Número de tarefa inválido, digite um que seja válido.");
+                }
             }
         }
 
