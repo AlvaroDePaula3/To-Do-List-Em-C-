@@ -72,8 +72,7 @@ namespace To_Do_List
                             concluirTarefa();
                             break;
                         case 4:
-                            //implementar posteriormente
-                            Console.WriteLine("Funcionalidade ainda em desenvolvimento");
+                            FiltrarPorPrioridade();
                             break;
                         case 5:
                             //implementar posteriormente
@@ -117,6 +116,11 @@ namespace To_Do_List
                     if (string.IsNullOrWhiteSpace(titulo))
                     {
                         Console.WriteLine("Por favor, escreva um título que seja válido");
+                        Console.WriteLine("Pressione qualquer tecla para colocar um novo título");
+                        Console.ReadKey(true);
+                        Console.Write("Título: ");
+                        titulo = Console.ReadLine();
+                        
                     }
                 } while (string.IsNullOrWhiteSpace(titulo));
 
@@ -179,7 +183,7 @@ namespace To_Do_List
                     Tarefa tarefa = listaDeTarefas[i];
                     string status = tarefa.Concluida ? "Sim" : "Não";
 
-                    Console.WriteLine($" {i+1} {status} {tarefa.Titulo}");
+                    Console.WriteLine($" {i+1} {tarefa.Titulo}");
                     Console.WriteLine($" Descrição: {tarefa.Descricao}");
                     Console.WriteLine($" Prioridade:{tarefa.Prioridade} e Data: {tarefa.DataCriacao:dd/MM/yyyy}");
                     Console.WriteLine();
@@ -253,6 +257,48 @@ namespace To_Do_List
                 {
                     Console.WriteLine("Número de tarefa inválido, digite um que seja válido.");
                 }
+            }
+
+            private void FiltrarPorPrioridade()
+            {
+                Console.Clear();
+                Console.WriteLine("=== FILTRAR TAREFAS POR PRIORIDADE ===");
+
+                //Verifica se há tarefas, caso não tenha. Ele retorna
+                if(listaDeTarefas.Count <= 0)
+                {
+                    Console.WriteLine("Não há tarefas para filtrar...");
+                    return;
+                }
+
+
+                for(int prioridade = 1; prioridade <= 5; prioridade++)
+                {
+                    Console.WriteLine($" \n=== Prioridade {prioridade}: ===\n");
+                    int contaPrioridade = 0;
+
+
+                        for(int i = 0; i < listaDeTarefas.Count; i++)
+                        {
+                           Tarefa tarefazinha = listaDeTarefas[i];
+                            
+                            if(tarefazinha.Prioridade == prioridade)
+                            {
+                                 Console.WriteLine($"{tarefazinha.Titulo}");
+                                 Console.WriteLine($"Descrição: {tarefazinha.Descricao}");
+                                 Console.WriteLine($"Data: {tarefazinha.DataCriacao:dd/MM/yyyy HH:mm}");
+                                 Console.WriteLine();                          
+                                 contaPrioridade++;
+                            }
+                        
+                        }
+
+                        if(contaPrioridade == 0)
+                    {
+                        Console.WriteLine("Parece que não há nada aqui... cri cri 🦗");
+                    }
+                }
+
             }
         }
 
