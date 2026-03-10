@@ -75,8 +75,7 @@ namespace To_Do_List
                             FiltrarPorPrioridade();
                             break;
                         case 5:
-                            //implementar posteriormente
-                            Console.WriteLine("Funcionalidade ainda em desenvolvimento");
+                             Estatisticas();
                             break;
                         case 0:
                             Console.WriteLine("Volte sempre ! Saindo...");
@@ -299,6 +298,45 @@ namespace To_Do_List
                     }
                 }
 
+            }
+
+            private void Estatisticas()
+            {
+                Console.Clear();
+                Console.WriteLine("=== Estatísticas ===\n");
+
+                if(listaDeTarefas.Count == 0)
+                {
+                    Console.WriteLine("Não há dados na lista para se ter estatísticas.");
+                    return;
+                }
+
+                int totalEstatisticas = listaDeTarefas.Count;
+                int finalizadas = 0;
+                int[] estatisticasFinais = new int[5];
+
+                foreach(var tarefa in  listaDeTarefas)
+                {
+                    if (tarefa.Concluida)
+                    {
+                        finalizadas++;
+                    }
+                    if (tarefa.Prioridade >= 1 && tarefa.Prioridade <= 5)
+                    {
+                        estatisticasFinais[tarefa.Prioridade - 1]++;
+                    }
+                }
+
+                Console.WriteLine($"Total de tarefas: {totalEstatisticas}");
+                Console.WriteLine($"Concluídas: {finalizadas}");
+                Console.WriteLine($"Pendentes: {totalEstatisticas - finalizadas}");
+                Console.WriteLine($"Progresso: {(double)finalizadas / totalEstatisticas*100:F1}%\n");
+
+                Console.WriteLine("Distribuição por prioridade");
+                for(int i = 0; i<5; i++)
+                {
+                    Console.WriteLine($"Prioridade: {i + 1}: {estatisticasFinais[i]}");
+                }
             }
         }
 
